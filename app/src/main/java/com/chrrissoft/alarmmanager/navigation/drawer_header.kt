@@ -1,8 +1,12 @@
 package com.chrrissoft.alarmmanager.navigation
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.NotificationsActive
+import androidx.compose.material.icons.rounded.Alarm
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,7 +21,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DrawerHeader(
     name: String = "Alarm Manager App",
-    icon: ImageVector = Icons.Rounded.NotificationsActive
+    icon: ImageVector = Icons.Rounded.Alarm
 ) {
     Box(
         modifier = Modifier

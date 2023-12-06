@@ -92,28 +92,48 @@ val cardColors
         )
     }
 
-val textFieldColors
-    @Composable get() = run {
-        TextFieldDefaults.colors(
-            focusedTextColor = colorScheme.primary,
-            unfocusedTextColor = colorScheme.primary,
-            disabledTextColor = colorScheme.primary,
-            focusedContainerColor = colorScheme.primaryContainer,
-            unfocusedContainerColor = colorScheme.primaryContainer,
-            disabledContainerColor = colorScheme.primaryContainer,
-            cursorColor = colorScheme.primary,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            focusedTrailingIconColor = colorScheme.primary,
-            unfocusedTrailingIconColor = colorScheme.primary,
-            disabledTrailingIconColor = colorScheme.primary,
-            focusedLeadingIconColor = colorScheme.primary,
-            unfocusedLeadingIconColor = colorScheme.primary,
-            disabledLeadingIconColor = colorScheme.primary,
-            focusedLabelColor = colorScheme.primary.copy(.6f),
-            unfocusedLabelColor = colorScheme.primary.copy(.6f),
-            disabledLabelColor = colorScheme.primary.copy(.6f),
+@Composable
+fun textFieldColors(
+    focusedTextColor: Color = colorScheme.primary,
+    unfocusedTextColor: Color = colorScheme.primary,
+    disabledTextColor: Color = colorScheme.primary,
+    focusedContainerColor: Color = colorScheme.primaryContainer,
+    unfocusedContainerColor: Color = colorScheme.primaryContainer,
+    disabledContainerColor: Color = colorScheme.primaryContainer,
+    cursorColor: Color = colorScheme.primary,
+    focusedIndicatorColor: Color = Color.Transparent,
+    unfocusedIndicatorColor: Color = Color.Transparent,
+    disabledIndicatorColor: Color = Color.Transparent,
+    focusedTrailingIconColor: Color = colorScheme.primary,
+    unfocusedTrailingIconColor: Color = colorScheme.primary,
+    disabledTrailingIconColor: Color = colorScheme.primary,
+    focusedLeadingIconColor: Color = colorScheme.primary,
+    unfocusedLeadingIconColor: Color = colorScheme.primary,
+    disabledLeadingIconColor: Color = colorScheme.primary,
+    focusedLabelColor: Color = colorScheme.primary.copy(.6f),
+    unfocusedLabelColor: Color = colorScheme.primary.copy(.6f),
+    disabledLabelColor: Color = colorScheme.primary.copy(.6f),
+): TextFieldColors {
+        return TextFieldDefaults.colors(
+            focusedTextColor = focusedTextColor,
+            unfocusedTextColor = unfocusedTextColor,
+            disabledTextColor = disabledTextColor,
+            focusedContainerColor = focusedContainerColor,
+            unfocusedContainerColor = unfocusedContainerColor,
+            disabledContainerColor = disabledContainerColor,
+            cursorColor = cursorColor,
+            focusedIndicatorColor = focusedIndicatorColor,
+            unfocusedIndicatorColor = unfocusedIndicatorColor,
+            disabledIndicatorColor = disabledIndicatorColor,
+            focusedTrailingIconColor = focusedTrailingIconColor,
+            unfocusedTrailingIconColor = unfocusedTrailingIconColor,
+            disabledTrailingIconColor = disabledTrailingIconColor,
+            focusedLeadingIconColor = focusedLeadingIconColor,
+            unfocusedLeadingIconColor = unfocusedLeadingIconColor,
+            disabledLeadingIconColor = disabledLeadingIconColor,
+            focusedLabelColor = focusedLabelColor,
+            unfocusedLabelColor = unfocusedLabelColor,
+            disabledLabelColor = disabledLabelColor,
         )
     }
 
@@ -195,5 +215,31 @@ val filledIconToggleButtonColors
             checkedContentColor = colorScheme.onPrimary,
             disabledContainerColor = colorScheme.secondaryContainer.copy(.5f),
             disabledContentColor = colorScheme.onSecondaryContainer.copy(.5f),
+        )
+    }
+
+@OptIn(ExperimentalMaterial3Api::class)
+val datePickerColors: DatePickerColors
+    @Composable get() = run {
+        DatePickerDefaults.colors(containerColor = colorScheme.primaryContainer)
+    }
+
+@OptIn(ExperimentalMaterial3Api::class)
+val timePickerColors: TimePickerColors
+    @Composable get() = run {
+        TimePickerDefaults.colors(
+            clockDialColor = colorScheme.primaryContainer,
+            clockDialSelectedContentColor = colorScheme.onPrimary,
+            clockDialUnselectedContentColor = colorScheme.onPrimaryContainer,
+            selectorColor = colorScheme.onPrimaryContainer,
+            periodSelectorBorderColor = colorScheme.onPrimaryContainer,
+            periodSelectorSelectedContainerColor = colorScheme.onPrimaryContainer,
+            periodSelectorUnselectedContainerColor = Color.Transparent,
+            periodSelectorSelectedContentColor = colorScheme.onPrimary,
+            periodSelectorUnselectedContentColor = colorScheme.onPrimaryContainer,
+            timeSelectorSelectedContainerColor = colorScheme.primaryContainer,
+            timeSelectorUnselectedContainerColor = Color.Transparent,
+            timeSelectorSelectedContentColor = colorScheme.onPrimaryContainer,
+            timeSelectorUnselectedContentColor = colorScheme.onPrimaryContainer.copy(.5f),
         )
     }

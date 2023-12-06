@@ -1,70 +1,31 @@
 package com.chrrissoft.alarmmanager.screens.components
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.*
-import androidx.compose.material3.InputChipDefaults.inputChipBorder
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.chrrissoft.alarmmanager.base.AlarmOperation
-import com.chrrissoft.alarmmanager.base.AlarmOperation.PendingIntentOperation
-import com.chrrissoft.alarmmanager.ui.theme.inputChipColorsVariant
-
-@Composable
-fun AlarmOperationUi(
-    data: AlarmOperation<*>,
-    onChangeData: (AlarmOperation<*>) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    AlarmOperationUi(
-        data = data,
-        onChangeData = { onChangeData(it) },
-        list = AlarmOperation.list,
-        modifier = modifier
-    )
-}
-
-
-@Composable
-fun AlarmIntentOperationUi(
-    data: PendingIntentOperation,
-    onChangeData: (PendingIntentOperation) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    AlarmOperationUi(
-        data = data,
-        onChangeData = { onChangeData(it) },
-        list = PendingIntentOperation.list,
-        modifier = modifier
-    )
-}
-
+import com.chrrissoft.alarmmanager.entities.AlarmOperation
+import com.chrrissoft.alarmmanager.ui.components.MyInputChip
+import com.chrrissoft.alarmmanager.utils.ComposeUtils.forEach
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun<O : AlarmOperation<*>> AlarmOperationUi(
-    data: O,
-    onChangeData: (O) -> Unit,
-    list: List<O>,
+fun AlarmOperation(
+    state: AlarmOperation,
+    onChangeState: (AlarmOperation) -> Unit,
     modifier: Modifier = Modifier,
+    operations: List<AlarmOperation> = AlarmOperation.operations,
 ) {
-    LazyRow(modifier) {
-        itemsIndexed(list) { i, e ->
-            InputChip(
-                selected = data===e,
-                onClick = { onChangeData(e) },
-                label = { Text(text = e.label) },
-                trailingIcon = {
-                    Icon(imageVector = e.icon, contentDescription = null)
-                },
-                colors = inputChipColorsVariant,
-                border = inputChipBorder(Color.Transparent)
+    Row(modifier.fillMaxWidth()) {
+        forEach(list = operations) {
+            MyInputChip(
+                selected = state == it,
+                onClick = { onChangeState(it) },
+                label = { Text(text = it.label) },
+                modifier = Modifier.weight(1f)
             )
-            if (i!=list.lastIndex) Spacer(modifier = Modifier.width(5.dp))
         }
     }
 }

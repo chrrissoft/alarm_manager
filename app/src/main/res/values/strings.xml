@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Alarm Manager</string>
+    <string name="cancel_next_alarms">Cancel next alarms</string>
 </resources>

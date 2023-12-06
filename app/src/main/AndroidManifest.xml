@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".AlarmManagerApp"
         android:allowBackup="true"
@@ -12,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AlarmManager"
-        tools:targetApi="31">
+        tools:targetApi="34">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -27,6 +32,23 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <receiver
+            android:name="com.chrrissoft.alarmmanager.app.OnAlarmReceiver"
+            android:exported="false" />
+        <receiver
+            android:name="com.chrrissoft.alarmmanager.app.BootCompleteReceiver"
+            android:directBootAware="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.chrrissoft.alarmmanager.app.CancelRepeatingAlarmService"
+            android:exported="false" />
     </application>
 
 </manifest>
