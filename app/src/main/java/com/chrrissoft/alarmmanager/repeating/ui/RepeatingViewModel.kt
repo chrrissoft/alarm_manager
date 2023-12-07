@@ -1,5 +1,6 @@
 package com.chrrissoft.alarmmanager.repeating.ui
 
+import android.app.AlarmManager
 import androidx.compose.material3.SnackbarDuration.Long
 import androidx.compose.material3.SnackbarResult.ActionPerformed
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ import com.chrrissoft.alarmmanager.repeating.usecases.interfaces.ScheduleRepeati
 import com.chrrissoft.alarmmanager.ui.SnackbarData
 import com.chrrissoft.alarmmanager.ui.SnackbarData.MessageType
 import com.chrrissoft.alarmmanager.ui.SnackbarData.MessageType.Error
+import com.chrrissoft.alarmmanager.utils.AlarmManagerUtils.exactsEnabled
 import com.chrrissoft.alarmmanager.utils.AlarmUtils.countText
 import com.chrrissoft.alarmmanager.utils.ComposeUtils.show
 import com.chrrissoft.alarmmanager.utils.Util.text
@@ -41,6 +43,7 @@ import androidx.lifecycle.viewModelScope as scope
 
 @HiltViewModel
 class RepeatingViewModel @Inject constructor(
+    alarmManager: AlarmManager,
     private val ScheduleRepeatingUseCase: ScheduleRepeatingAlarmsUseCase,
     private val SaveRepeatingAlarmUseCase: SaveRepeatingAlarmUseCase,
     private val GetRepeatingAlarmsUseCase: GetRepeatingAlarmsUseCase,
@@ -62,6 +65,7 @@ class RepeatingViewModel @Inject constructor(
     }
 
     init {
+        updateState(exactsAlarmEnabled = alarmManager.exactsEnabled)
         scope.launch(exceptionHandler) {
             GetRepeatingAlarmsUseCase().collect {
                 updateState(listing = _listing.copy(builders = it))
@@ -161,11 +165,12 @@ class RepeatingViewModel @Inject constructor(
         snackbar: SnackbarData = _snackbar,
         builder: ResState<RepeatingAlarm> = _builder,
         listing: ListingRepeatingState = _listing,
+        exactsAlarmEnabled: Boolean = state.exactsAlarmEnabled,
         block: (RepeatingState) -> Unit = {},
     ) {
         _state.update {
             block(it)
-            it.copy(page = page, snackbar = snackbar, builder = builder, listing = listing)
+            it.copy(page = page, snackbar = snackbar, builder = builder, listing = listing, exactsAlarmEnabled = exactsAlarmEnabled)
         }
     }
 

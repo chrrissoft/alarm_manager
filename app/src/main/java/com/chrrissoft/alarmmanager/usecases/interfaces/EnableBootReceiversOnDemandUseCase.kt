@@ -1,5 +1,5 @@
 package com.chrrissoft.alarmmanager.usecases.interfaces
 
-interface ScheduleAlarmsOnBootUseCase {
+interface EnableBootReceiversOnDemandUseCase {
     operator fun invoke()
 }

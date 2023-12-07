@@ -3,7 +3,6 @@ package com.chrrissoft.alarmmanager.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.Q
 import androidx.core.app.NotificationCompat
@@ -15,9 +14,12 @@ import com.chrrissoft.alarmmanager.R.drawable.ic_launcher_foreground
 import com.chrrissoft.alarmmanager.R.string.cancel_next_alarms
 import com.chrrissoft.alarmmanager.app.CancelRepeatingAlarmService
 import com.chrrissoft.alarmmanager.base.Alarm
+import com.chrrissoft.alarmmanager.entities.ResState
 import com.chrrissoft.alarmmanager.repeating.entities.RepeatingAlarm
+import com.chrrissoft.alarmmanager.utils.AlarmUtils.countText
 import com.chrrissoft.alarmmanager.utils.AlarmUtils.typeText
 import com.chrrissoft.alarmmanager.utils.IntentUtils.putAlarm
+import com.chrrissoft.alarmmanager.utils.Util.debug
 import kotlinx.serialization.json.Json
 import kotlin.random.Random
 
@@ -35,15 +37,6 @@ object NotificationManagerUtils {
         ).build().let { notify(id, it) }
     }
 
-    @SuppressLint("MissingPermission")
-    fun NotificationManagerCompat.errorNotify(
-        e: Throwable,
-        ctx: Context,
-        id: Int = Random.nextInt(),
-    ) {
-        notify(id, generalNotification(ctx = ctx, title = "Error", text = e.message).build())
-    }
-
     fun generalNotification(
         ctx: Context,
         title: String,
@@ -52,22 +45,15 @@ object NotificationManagerUtils {
         icon: Int = R.mipmap.ic_launcher_round,
         channel: String = Constants.NOTIFICATION_CHANNEL_ID,
     ): NotificationCompat.Builder {
-        val largeIcon = BitmapFactory.decodeResource(ctx.resources, R.mipmap.ic_launcher_round)
+//        val largeIcon = BitmapFactory.decodeResource(ctx.resources, R.mipmap.ic_launcher_round)
+        debug(message = "notification - Melissa")
         return NotificationCompat.Builder(ctx, channel)
             .setContentTitle(title)
             .setOnlyAlertOnce(true)
             .setSmallIcon(icon)
-            .setLargeIcon(largeIcon)
+//            .setLargeIcon(largeIcon)
             .setContentText(text)
             .setSubText(subText)
-    }
-
-    fun onAlarmNotification(
-        json: Json,
-        alarm: Alarm,
-        context: Context,
-    ): NotificationCompat.Builder {
-        TODO()
     }
 
     fun NotificationCompat.Builder.setCancelRepeatingAlarmAction(
@@ -83,5 +69,17 @@ object NotificationManagerUtils {
             .apply { if (SDK_INT >= Q) identifier = alarm.id }
             .let { getService(context, (0), it, (0), (true)) }
         return addAction(icon, text, pendingIntent)
+    }
+
+    fun<A : Alarm> NotificationManagerCompat.scheduledAlarmNotification(
+        app: Context,
+        type: String,
+        res:  ResState<Map<A, ResState<*>>>,
+        id: Int = Random.nextInt(),
+    ) {
+        if (res is ResState.Loading) return
+        val notificationText = res.countText(success = "alarms scheduled of")
+        val notification = generalNotification(app, notificationText, subText = type)
+        notify(id, notification.build())
     }
 }

@@ -12,6 +12,7 @@ data class ClockState(
     val snackbar: SnackbarData = SnackbarData(),
     val builder: ResState<ClockAlarm> = Success(ClockAlarm()),
     val listing: ListingClockState = ListingClockState(),
+    val exactsAlarmEnabled: Boolean = true,
 ) {
     data class ListingClockState(
         val selected: List<ClockAlarm> = emptyList(),

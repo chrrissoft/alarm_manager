@@ -10,13 +10,14 @@ import androidx.compose.runtime.Composable
 import com.chrrissoft.alarmmanager.clock.entities.ClockAlarm
 import com.chrrissoft.alarmmanager.clock.ui.ClockEvent.ClockBuilderEvent.OnSaveBuilder
 import com.chrrissoft.alarmmanager.clock.ui.ClockEvent.ClockListingEvent.OnOpenAlarm
-import com.chrrissoft.alarmmanager.clock.ui.ClockEvent.*
+import com.chrrissoft.alarmmanager.clock.ui.ClockEvent.OnChangePage
 import com.chrrissoft.alarmmanager.clock.ui.ui.ScreenContent
 import com.chrrissoft.alarmmanager.entities.ListDetailPage.Builder
 import com.chrrissoft.alarmmanager.entities.ListDetailPage.Companion.pages
 import com.chrrissoft.alarmmanager.entities.ListDetailPage.Listing
 import com.chrrissoft.alarmmanager.entities.ResState.Success
 import com.chrrissoft.alarmmanager.ui.AlarmManagerSnackbar
+import com.chrrissoft.alarmmanager.ui.components.ExactsAlarmsDisableCard
 import com.chrrissoft.alarmmanager.ui.components.Screen
 import com.chrrissoft.alarmmanager.ui.entities.PagesBottomBar
 import com.chrrissoft.alarmmanager.utils.ComposeUtils.setBarsColors
@@ -54,6 +55,9 @@ fun ClockScreen(
         },
         onNavigation = { onOpenDrawer() },
         snackbarHost = { AlarmManagerSnackbar(state.snackbar) },
-        content = { ScreenContent(state = state, oneTimeEvent = onEvent) },
+        content = {
+            if (state.exactsAlarmEnabled) ExactsAlarmsDisableCard()
+            ScreenContent(state = state, oneTimeEvent = onEvent)
+        },
     )
 }

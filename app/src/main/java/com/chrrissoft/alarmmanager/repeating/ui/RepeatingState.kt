@@ -11,6 +11,7 @@ data class RepeatingState(
     val snackbar: SnackbarData = SnackbarData(),
     val builder: ResState<RepeatingAlarm> = Success(RepeatingAlarm()),
     val listing: ListingRepeatingState = ListingRepeatingState(),
+    val exactsAlarmEnabled: Boolean = true,
 ) {
     data class ListingRepeatingState(
         val selected: List<RepeatingAlarm> = emptyList(),

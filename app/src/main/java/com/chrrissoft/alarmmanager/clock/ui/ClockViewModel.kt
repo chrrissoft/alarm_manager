@@ -1,5 +1,6 @@
 package com.chrrissoft.alarmmanager.clock.ui
 
+import android.app.AlarmManager
 import androidx.compose.material3.SnackbarDuration.Long
 import androidx.compose.material3.SnackbarResult.ActionPerformed
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ import com.chrrissoft.alarmmanager.entities.ResState.Success
 import com.chrrissoft.alarmmanager.ui.SnackbarData
 import com.chrrissoft.alarmmanager.ui.SnackbarData.MessageType
 import com.chrrissoft.alarmmanager.ui.SnackbarData.MessageType.Error
+import com.chrrissoft.alarmmanager.utils.AlarmManagerUtils.exactsEnabled
 import com.chrrissoft.alarmmanager.utils.AlarmUtils.countText
 import com.chrrissoft.alarmmanager.utils.ComposeUtils.show
 import com.chrrissoft.alarmmanager.utils.Util.text
@@ -41,6 +43,7 @@ import androidx.lifecycle.viewModelScope as scope
 
 @HiltViewModel
 class ClockViewModel @Inject constructor(
+    alarmManager: AlarmManager,
     private val ScheduleClockUseCase: ScheduleClockAlarmsUseCase,
     private val SaveClockAlarmUseCase: SaveClockAlarmUseCase,
     private val GetClockAlarmsUseCase: GetClockAlarmsUseCase,
@@ -62,6 +65,7 @@ class ClockViewModel @Inject constructor(
     }
 
     init {
+        updateState(exactsAlarmEnabled = alarmManager.exactsEnabled)
         scope.launch(exceptionHandler) {
             GetClockAlarmsUseCase().collect {
                 updateState(listing = _listing.copy(builders = it))
@@ -161,11 +165,12 @@ class ClockViewModel @Inject constructor(
         snackbar: SnackbarData = _snackbar,
         builder: ResState<ClockAlarm> = _builder,
         listing: ListingClockState = _listing,
+        exactsAlarmEnabled: Boolean = state.exactsAlarmEnabled,
         block: (ClockState) -> Unit = {},
     ) {
         _state.update {
             block(it)
-            it.copy(page = page, snackbar = snackbar, builder = builder, listing = listing)
+            it.copy(page = page, snackbar = snackbar, builder = builder, listing = listing, exactsAlarmEnabled = exactsAlarmEnabled)
         }
     }
 

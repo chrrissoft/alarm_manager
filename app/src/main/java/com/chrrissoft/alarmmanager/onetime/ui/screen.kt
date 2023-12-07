@@ -19,6 +19,7 @@ import com.chrrissoft.alarmmanager.onetime.ui.ui.ScreenContent
 import com.chrrissoft.alarmmanager.tags.ui.AlarmTagsEvent
 import com.chrrissoft.alarmmanager.tags.ui.AlarmTagsState
 import com.chrrissoft.alarmmanager.ui.AlarmManagerSnackbar
+import com.chrrissoft.alarmmanager.ui.components.ExactsAlarmsDisableCard
 import com.chrrissoft.alarmmanager.ui.components.Screen
 import com.chrrissoft.alarmmanager.ui.entities.PagesBottomBar
 import com.chrrissoft.alarmmanager.utils.ComposeUtils.setBarsColors
@@ -59,6 +60,7 @@ fun OneTimeScreen(
         onNavigation = { onOpenDrawer() },
         snackbarHost = { AlarmManagerSnackbar(state.snackbar) },
         content = {
+            if (state.exactsAlarmEnabled) ExactsAlarmsDisableCard()
             ScreenContent(
                 state = state,
                 oneTimeEvent = onEvent,

@@ -3,21 +3,16 @@ package com.chrrissoft.alarmmanager.onetime.usecases.classes
 import android.annotation.SuppressLint
 import androidx.core.app.NotificationManagerCompat
 import com.chrrissoft.alarmmanager.AlarmManagerApp
-import com.chrrissoft.alarmmanager.entities.ResState
 import com.chrrissoft.alarmmanager.entities.ResState.Companion.map
 import com.chrrissoft.alarmmanager.entities.ResState.Success
-import com.chrrissoft.alarmmanager.onetime.entities.OneTimeAlarm
 import com.chrrissoft.alarmmanager.onetime.usecases.interfaces.GetOneTimeAlarmsUseCase
 import com.chrrissoft.alarmmanager.onetime.usecases.interfaces.RestartScheduledOneTimeAlarmUseCase
 import com.chrrissoft.alarmmanager.onetime.usecases.interfaces.ScheduleOneTimeAlarmsUseCase
-import com.chrrissoft.alarmmanager.utils.AlarmUtils.countText
-import com.chrrissoft.alarmmanager.utils.NotificationManagerUtils.generalNotification
-import kotlinx.coroutines.flow.Flow
+import com.chrrissoft.alarmmanager.utils.NotificationManagerUtils.scheduledAlarmNotification
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
-import kotlin.random.Random
 
 @SuppressLint("MissingPermission")
 class RestartScheduledOneTimeAlarmUseCaseImpl @Inject constructor(
@@ -26,20 +21,11 @@ class RestartScheduledOneTimeAlarmUseCaseImpl @Inject constructor(
     private val GetOneTimeAlarmsUseCase: GetOneTimeAlarmsUseCase,
     private val ScheduleOneTimeUseCase: ScheduleOneTimeAlarmsUseCase,
 ) : RestartScheduledOneTimeAlarmUseCase {
-    override fun invoke(): Flow<ResState<Map<OneTimeAlarm, ResState<*>>>> {
+    override suspend fun invoke() {
         return GetOneTimeAlarmsUseCase()
             .map { db -> db.map { alarms -> alarms.filter { it.running } } }
             .mapNotNull { it as? Success }
-            .map { alarms ->
-                val res = ScheduleOneTimeUseCase(alarms.data).last()
-                val notificationText = res.countText(success = "alarms scheduled of")
-                val notification = generalNotification(app, notificationText, subText = "One time")
-                notificationManager.notify(ID, notification.build())
-                res
-            }
-    }
-
-    companion object {
-        private val ID = Random.nextInt()
+            .map { ScheduleOneTimeUseCase(it.data).last() }
+            .collect { notificationManager.scheduledAlarmNotification(app, type = "One time", it) }
     }
 }

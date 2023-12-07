@@ -12,7 +12,9 @@ data class OneTimeState(
     val snackbar: SnackbarData = SnackbarData(),
     val builder: ResState<OneTimeAlarm> = Success(OneTimeAlarm()),
     val listing: ListingOneTimeState = ListingOneTimeState(),
+    val exactsAlarmEnabled: Boolean = true,
 ) {
+
     data class ListingOneTimeState(
         val selected: List<OneTimeAlarm> = emptyList(),
         val builders: ResState<List<OneTimeAlarm>> = ResState.Loading,

@@ -46,9 +46,9 @@ fun Card(
     ) {
         Column(Modifier.padding(12.dp)) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
             ) {
                 title?.let { Text(text = it, style = typography.titleLarge) }
                 onInfo?.let {
@@ -56,8 +56,8 @@ fun Card(
                         Icon(imageVector = Icons.Rounded.Info, contentDescription = null)
                     }
                 }
-                if (title != null || onInfo != null) Spacer(modifier = Modifier.height(8.dp))
             }
+            if (title != null || onInfo != null) Spacer(modifier = Modifier.height(10.dp))
             content()
         }
     }

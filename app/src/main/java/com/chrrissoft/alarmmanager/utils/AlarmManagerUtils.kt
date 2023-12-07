@@ -188,6 +188,6 @@ object AlarmManagerUtils {
         if (!exactsEnabled) throw IllegalStateException("Exacts alarm permission is disable")
     }
 
-    private val AlarmManager.exactsEnabled
+    val AlarmManager.exactsEnabled
         get() = if (SDK_INT >= S) canScheduleExactAlarms() else true
 }

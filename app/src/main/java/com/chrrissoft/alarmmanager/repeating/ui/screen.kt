@@ -7,7 +7,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import com.chrrissoft.alarmmanager.utils.ComposeUtils.setBarsColors
 import com.chrrissoft.alarmmanager.entities.ListDetailPage.Builder
 import com.chrrissoft.alarmmanager.entities.ListDetailPage.Companion.pages
 import com.chrrissoft.alarmmanager.entities.ListDetailPage.Listing
@@ -18,8 +17,10 @@ import com.chrrissoft.alarmmanager.repeating.ui.RepeatingEvent.RepeatingBuilderE
 import com.chrrissoft.alarmmanager.repeating.ui.RepeatingEvent.RepeatingListingEvent.OnOpenAlarm
 import com.chrrissoft.alarmmanager.repeating.ui.ui.ScreenContent
 import com.chrrissoft.alarmmanager.ui.AlarmManagerSnackbar
+import com.chrrissoft.alarmmanager.ui.components.ExactsAlarmsDisableCard
 import com.chrrissoft.alarmmanager.ui.components.Screen
 import com.chrrissoft.alarmmanager.ui.entities.PagesBottomBar
+import com.chrrissoft.alarmmanager.utils.ComposeUtils.setBarsColors
 
 @Composable
 fun RepeatingScreen(
@@ -54,6 +55,9 @@ fun RepeatingScreen(
         },
         onNavigation = { onOpenDrawer() },
         snackbarHost = { AlarmManagerSnackbar(state.snackbar) },
-        content = { ScreenContent(state, onEvent) },
+        content = {
+            if (state.exactsAlarmEnabled) ExactsAlarmsDisableCard()
+            ScreenContent(state, onEvent)
+        },
     )
 }
